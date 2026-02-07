@@ -1,4 +1,4 @@
-export const DETAIL_SURAH = `/detal-surah`;
+export const DETAIL_SURAH = `/detail-surah`;
 export const HOME_PAGE = "/";
 export const SURAH_PAGE = "/surah";
 export const UNDER_DEVELOP = "/under-develop";
