@@ -1,6 +1,6 @@
-import { apiClient, surahClient } from "@/api/apiClient";
-import type { AllDataImsyak } from "@/types/Imsyak.type";
-import type { Surat, SuratDetail } from "@/types/Surat";
+import { apiClient } from "@/api/apiClient";
+import type { AllDataImsyak } from "@/types/imsyak.type";
+// import type { Surat, SuratDetail } from "@/types/Surat";
 
 // interface ProvinsiProps {
 //   data: string[];
@@ -15,7 +15,6 @@ export const getAllKabupaten = async (provinsi: string): Promise<string[]> => {
   const { data } = await apiClient.post(`imsakiyah/kabkota`, {
     provinsi,
   });
-
   return data.data;
 };
 

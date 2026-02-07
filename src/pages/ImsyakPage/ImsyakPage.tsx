@@ -23,7 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Imsyak } from "@/types/Imsyak.type";
+import type { Imsyak } from "@/types/imsyak.type";
 import { CircleAlert } from "lucide-react";
 import TooltipWrapper from "@/components/template/TooltipWrapper";
 import { TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";

@@ -1,5 +1,5 @@
-import {apiClient, surahClient} from "@/api/apiClient";
-import type { Surat, SuratDetail } from "@/types/Surat";
+import {surahClient} from "@/api/apiClient";
+// import type { Surat, SuratDetail } from "@/types/Surat";
 
 interface DoaDetailProps {
     id: number,

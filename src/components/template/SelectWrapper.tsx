@@ -1,16 +1,16 @@
-import React from 'react'
-import { Select } from '../ui/select'
+import React from "react";
+import { Select } from "../ui/select";
 
 type Props = {
-  children: React.ReactNode
-} & React.ComponentProps<typeof Select>
+  children: React.ReactNode;
+} & React.ComponentProps<typeof Select>;
 
-function SelectWrapper({children, ...props}: Props) {
+function SelectWrapper({ children, ...props }: Props) {
   return (
-    <Select className='w-full' {...props}>
-        {children}
-    </Select>
-  )
+    <div className="w-full">
+      <Select {...props}>{children}</Select>
+    </div>
+  );
 }
 
-export default SelectWrapper
+export default SelectWrapper;
