@@ -16,6 +16,7 @@ import { PersonPraying } from "@/assets/icons/PersonPraying";
 import { AlQuranIndonesia } from "@/assets/icons/AlQuranIndonesia";
 import PrayerTime from "@/assets/icons/PrayerTime";
 import DoaIcon from "@/assets/icons/DoaIcon";
+import { useClock } from "@/hooks/useClock";
 // import type { Surat } from "@/types/Surat";
 // import { useDoa } from "@/hooks/useDoa";
 
@@ -106,7 +107,9 @@ export const CardMenusApp = () => {
               width={"42px"}
               className="fill-biru stroke-[2.2] stroke-biru"
             />
-            <span className="max-md:text-[10px] text-biru line-clamp-2 w-fit">Imsyak</span>
+            <span className="max-md:text-[10px] text-biru line-clamp-2 w-fit">
+              Imsyak
+            </span>
             {/* <p>Imsakiyah</p> */}
           </NavLink>
         </CardContent>
@@ -142,6 +145,8 @@ export default function HomePage() {
   // navigation
   const navigate = useNavigate();
 
+  const time = useClock();
+
   return (
     <>
       <div className="flex flex-col">
@@ -155,6 +160,7 @@ export default function HomePage() {
             </p>
             <h4 className="text-base font-bold my-auto sm:text-xl">QuranKu.</h4>
           </div>
+          {!time ? <Skeleton className="w-1/4 h-4 bg-slate-800" /> : <p className="max-sm:text-xs">{time}</p>}
           {/*  */}
         </section>
         {/* header */}

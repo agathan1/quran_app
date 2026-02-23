@@ -24,9 +24,6 @@ function SurahPage() {
   // }, [])  
 
   // if (isLoading) return <p>Loading...</p>;
-
-
-  console.log("result", result.length);
   
 
   return (
@@ -44,13 +41,13 @@ function SurahPage() {
               if (e.key === "Enter") submitSearch();
             }}
             placeholder="Silahkan cari surat disini"
-            className="border-2 border-neutral-950/50 focus-visible:border-none"
+            className="border-2 border-biru/60 focus-visible:border-biru focus-visible:ring-biru"
           />
           <Button
             type="submit"
             variant="outline"
             onClick={submitSearch}
-            className="bg-transparent border-2 border-neutral-950/50"
+            className="bg-transparent border-2 focus-visible:border-biru focus-visible:ring-biru border-biru/60"
             size={"icon-sm"}
           >
             <Search />

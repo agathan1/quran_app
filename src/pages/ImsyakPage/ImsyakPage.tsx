@@ -28,6 +28,7 @@ import { CircleAlert } from "lucide-react";
 import TooltipWrapper from "@/components/template/TooltipWrapper";
 import { TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useEffect } from "react";
 
 function ImsyakPage() {
   const navigate = useNavigate();
@@ -56,6 +57,11 @@ function ImsyakPage() {
     isLoading: jadwalLoading,
     error: jadwalError,
   } = useJadwalImsyak(formik.values.provinsi, formik.values.kabupaten);
+
+  // kode untuk mereset value kabupaten saat value provinsi berubah
+  useEffect(() => {
+    formik.setFieldValue("kabupaten", "");
+  }, [formik.values.provinsi]);
 
   const backHandler = () => {
     navigate(HOME_PAGE);
@@ -137,19 +143,19 @@ function ImsyakPage() {
               </p>
             ) : (
               <SelectWrapper
-                disabled={!formik.values.provinsi}
+                value={formik.values.kabupaten}
+                disabled={!formik.values.provinsi || kabLoading}
                 onValueChange={(value) =>
                   formik.setFieldValue("kabupaten", value)
                 }
               >
                 <SelectTrigger className="w-full text-xs focus-visible:ring-biru">
-                  <SelectValue
-                    placeholder={
-                      kabLoading ? "Loading..." : "-- Pilih Kabupaten --"
-                    }
-                  />
+                  <SelectValue placeholder="-- Pilih Kabupaten --" />
                 </SelectTrigger>
                 <SelectContent position="popper">
+                  {/* {kabLoading && (
+                    <span className="">Loading...</span>
+                  )} */}
                   {DataKabupaten?.map((kab: string) => (
                     <SelectItem
                       key={kab}
@@ -175,78 +181,83 @@ function ImsyakPage() {
             "{jadwalError?.message}". Silahkan coba lagi nanti.
           </p>
         ) : null}
-        {jadwalLoading ? (
-          <Skeleton className="max-w-full bg-slate-400" />
-        ) : // <p className="text-sm max-sm:text-xs text-red-700">
-        //   Loading...
-        // </p>
-        null}
-        {!formik.values.kabupaten ? (
+        {!formik.values.kabupaten && (
           <p className="text-sm max-sm:text-xs text-red-700">
             Silahkan pilih provinsi dan kabupaten/kota terlebih dahulu
           </p>
+        )}
+        {jadwalLoading ? (
+          <span className="space-y-4">
+            {[...Array(5)].map((_, index) => (
+              <Skeleton key={index} className="max-w-full h-8 bg-slate-400" />
+            ))}
+          </span>
         ) : (
           <div>
-            <div className="text-start font-semibold text-xl text-biru flex items-center space-x-2">
-              <span className="max-sm:text-base">
-                Jadwal Imsyak {formik.values.kabupaten}
-              </span>
-              <TooltipWrapper>
-                <TooltipTrigger>
-                  <CircleAlert className="max-sm:size-6" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Scroll kanan dan kiri untuk melihat seluruh jadwal</p>
-                </TooltipContent>
-              </TooltipWrapper>
-            </div>
-            <div className="h-[calc(50vh-3rem)] max-sm:h-[calc(50vh-2.2rem)] mt-2 overflow-x-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              <TableWrapper className=" border-2 rounded-lg">
-                <TableHeader className="bg-biru/20">
-                  <TableRow>
-                    {[
-                      "Hari ke",
-                      "Imsak",
-                      "Subuh",
-                      "Terbit",
-                      "Dhuha",
-                      "Dzuhur",
-                      "Ashar",
-                      "Maghrib",
-                      "Isya",
-                    ].map((head) => (
-                      <TableHead
-                        key={head}
-                        className={`${head == "Imsak" || head == "Maghrib" ? "text-biru" : "text-hitem"} w-auto`}
-                      >
-                        {head}
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {DataJadwal?.imsakiyah?.map((imsyak: Imsyak) => (
-                    <TableRow key={imsyak.tanggal} className="mx-auto">
-                      <TableCell className="text-center">
-                        {imsyak.tanggal}
-                      </TableCell>
-                      <TableCell className="text-biru text-start">
-                        {imsyak.imsak}
-                      </TableCell>
-                      <TableCell>{imsyak.subuh}</TableCell>
-                      <TableCell>{imsyak.terbit}</TableCell>
-                      <TableCell>{imsyak.dhuha}</TableCell>
-                      <TableCell>{imsyak.dzuhur}</TableCell>
-                      <TableCell>{imsyak.ashar}</TableCell>
-                      <TableCell className="text-biru">
-                        {imsyak.maghrib}
-                      </TableCell>
-                      <TableCell>{imsyak.isya}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </TableWrapper>
-            </div>
+            {DataJadwal && (
+              <>
+                <div className="text-start font-semibold text-xl text-biru flex items-center space-x-2">
+                  <span className="max-sm:text-base">
+                    Jadwal Imsyak {formik.values.kabupaten}
+                  </span>
+                  <TooltipWrapper>
+                    <TooltipTrigger>
+                      <CircleAlert className="max-sm:size-6" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Scroll kanan dan kiri untuk melihat seluruh jadwal</p>
+                    </TooltipContent>
+                  </TooltipWrapper>
+                </div>
+                <div className="h-[calc(50vh-3rem)] max-sm:h-[calc(50vh-2.2rem)] mt-2 overflow-x-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                  <TableWrapper className=" border-2 rounded-lg">
+                    <TableHeader className="bg-biru/20">
+                      <TableRow>
+                        {[
+                          "Hari ke",
+                          "Imsak",
+                          "Subuh",
+                          "Terbit",
+                          "Dhuha",
+                          "Dzuhur",
+                          "Ashar",
+                          "Maghrib",
+                          "Isya",
+                        ].map((head) => (
+                          <TableHead
+                            key={head}
+                            className={`${head == "Imsak" || head == "Maghrib" ? "text-biru" : "text-hitem"} w-auto`}
+                          >
+                            {head}
+                          </TableHead>
+                        ))}
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {DataJadwal?.imsakiyah?.map((imsyak: Imsyak) => (
+                        <TableRow key={imsyak.tanggal} className="mx-auto">
+                          <TableCell className="text-center">
+                            {imsyak.tanggal}
+                          </TableCell>
+                          <TableCell className="text-biru text-start">
+                            {imsyak.imsak}
+                          </TableCell>
+                          <TableCell>{imsyak.subuh}</TableCell>
+                          <TableCell>{imsyak.terbit}</TableCell>
+                          <TableCell>{imsyak.dhuha}</TableCell>
+                          <TableCell>{imsyak.dzuhur}</TableCell>
+                          <TableCell>{imsyak.ashar}</TableCell>
+                          <TableCell className="text-biru">
+                            {imsyak.maghrib}
+                          </TableCell>
+                          <TableCell>{imsyak.isya}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </TableWrapper>
+                </div>
+              </>
+            )}
           </div>
         )}
       </section>
